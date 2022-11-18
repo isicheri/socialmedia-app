@@ -74,12 +74,12 @@ exports.getUserById = (req,res) =>{
         
 exports.updateUserById = async(req,res) => {
     try {
-       let user = await User.findByIdAndDelete(req.params.id,req.body,{
-        new: true,
-        runValidators: true
-       })
-
-       req.profile = user
+      
+        let user = User.findByIdAndUpdate(req.params.id,req.body,{
+            new: true,
+            runValidators: true
+        })
+    
 
        res.status(200).json(user)
 
@@ -90,4 +90,21 @@ exports.updateUserById = async(req,res) => {
     }
 }
 
+
+exports.deleteUserById = async (req,res) => {
+   try {
+    let user = await User.findByIdAndDelete(req.params.id)
+
+    req.profile = user
+
+    res.status(200).json({
+        message: 'user deleted'
+    })
+   } catch (error) {
+    res.status(400).json({
+        message: 'failed',
+        error: getErrorMessage(error)
+    })
+   }
+}
 

@@ -13,10 +13,6 @@ mongoose.connect(DB,() => {
 })
 
 
-mongoose.connection.on('error',() => {
-    throw new Error (`unable to connect to database: ${DB}`)
-})
-
 app.listen(port,() => {
     console.log('server is running')
 })
