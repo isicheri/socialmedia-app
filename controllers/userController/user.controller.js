@@ -9,13 +9,13 @@ exports.createUser = async(req,res) => {
         const user = await User.create(req.body)
        
         if(req.body.password) {
-            req.body.password = await CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC)
+            req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC)
     }
 
       return res.status(200).json({
         status: 'success',
         data: {
-            user  // based on this project br showing you guys the user info cause it just a personal project
+            user  // based on this project i'll showing you guys the user info cause it just a personal project
         },
         message: 'user successfully registered'
       })
