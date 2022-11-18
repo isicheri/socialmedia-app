@@ -79,7 +79,10 @@ exports.updateUserById = async(req,res) => {
             new: true,
             runValidators: true
         })
+
+      user.password = undefined
     
+        req.profile = user  
 
        res.status(200).json(user)
 
