@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const CryptoJS = require('crypto-js')
 const {getErrorMessage} = require('../../dbErrorHandler')
 const User = require('../../models/userModel/user.model')
-const { findByIdAndUpdate } = require('../../models/userModel/user.model')
+
 
 
 exports.createUser = async(req,res) => {
@@ -54,7 +54,7 @@ exports.userById = async (req,res,next,id) => {
     try {
         let user = await User.findById(id)
         if (!user)
-        return res.status('400').json({
+        return res.status(400).json({
         error: "User not found"
         })
         req.profile = user
@@ -75,7 +75,7 @@ exports.getUserById = (req,res) =>{
 exports.updateUserById = async(req,res) => {
     try {
       
-        let user = User.findByIdAndUpdate(req.params.id,req.body,{
+        let user =  await User.findByIdAndUpdate(req.params.id,req.body,{
             new: true,
             runValidators: true
         })
