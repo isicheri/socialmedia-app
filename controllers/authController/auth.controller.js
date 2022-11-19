@@ -38,10 +38,43 @@ try {
 }
  }
 
-exports.signout = (req, res) => {  }
+exports.signout = (req, res) => { 
+    res.clearCookie('token')
+    return res.status('200').json({
+    message: "signed out"
+    })
+ }
 
-exports.verifySignin = (req,res) => { }
+exports.verifySignin = (req,res,next) => { 
+    const authHeader = req.headers.token
 
-exports.authorisedUser = (req, res) => {  }
+    if(authHeader) {
+        const token = authHeader.split(' ')[1]
+
+        Jwt.verify(token,process.env.JWT_SEC,(err,user) => {
+            if(err) return res.status(401).json({message: 'unauthorised user'});
+
+            req.user = user
+            next()
+        } )
+    }else{
+        res.status(403).json({
+            message: 'register as a user'
+        })
+    }
+ }
+
+exports.authorisedUser = (req, res, next) => {
+    verifySignin(req,res,() => {
+        if(req.user.id === req.params.id) {
+          next()
+        }else {
+            res.status(403).json({
+                status: 'failed',
+                message: 'authentication failed'
+            })
+        }
+    })
+}
 
 
