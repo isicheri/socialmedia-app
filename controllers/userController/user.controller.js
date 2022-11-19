@@ -10,7 +10,7 @@ exports.createUser = async(req,res) => {
         const user = await User.create(req.body)
        
         if(req.body.password) {
-            req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC)
+            req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC).toString()
     }
 
       return res.status(201).json({
