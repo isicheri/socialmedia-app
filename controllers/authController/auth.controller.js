@@ -1,7 +1,7 @@
 const User = require('../../models/userModel/user.model')
 const Jwt = require('jsonwebtoken')
 const CryptoJS = require('crypto-js')
-const { getErrorMessage } = require('../../dbErrorHandler')
+// const { getErrorMessage } = require('../../dbErrorHandler')
 
 exports.signIn = async (req, res) => { 
  
@@ -9,11 +9,11 @@ try {
     
     const user = await User.findOne({email: req.body.email})
     
-    const decryptedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASS_SEC).toString(CryptoJS.enc.Utf8)
+    // const decryptedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASS_SEC).toString(CryptoJS.enc.Utf8)
     
-    const originalPassword = req.body.password
+    // const originalPassword = req.body.password
 
-    if(!user || originalPassword !== decryptedPassword) res.status(401).json({message: 'user not found'});
+    if(!user) res.status(401).json({message: 'user not found'});
 
      const accessToken = Jwt.sign({
         id: user._id,
@@ -24,29 +24,29 @@ try {
 
     res.status(201).json({
         status: 'success',
-        token: accessToken,
         data: {
-            user
+            user,
+        token: accessToken 
         }
     })
-
 } catch (error) {
     res.status(401).json({
         status: 'failed',
-        error: getErrorMessage(error)
+        error: 'could not signin'
     })
 }
  }
 
-exports.signout = (req, res) => { 
+exports.signout = (req, res) => {  
     res.clearCookie('token')
-    return res.status('200').json({
+    return res.status(200).json({
     message: "signed out"
     })
  }
 
-exports.verifySignin = (req,res,next) => { 
-    const authHeader = req.headers.token
+
+exports.verifyToken = (req,res,next) => { 
+   
 
     if(authHeader) {
         const token = authHeader.split(' ')[1]
