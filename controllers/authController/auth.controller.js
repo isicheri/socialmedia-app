@@ -3,7 +3,7 @@ const Jwt = require('jsonwebtoken')
 const CryptoJS = require('crypto-js')
 // const { getErrorMessage } = require('../../dbErrorHandler')
 
-exports.signIn = async (req, res) => { 
+const signIn = async (req, res) => { 
  
 try {
     
@@ -37,7 +37,7 @@ try {
 }
  }
 
-exports.signout = (req, res) => {  
+const signout = (req, res) => {  
     res.clearCookie('token')
     return res.status(200).json({
     message: "signed out"
@@ -45,8 +45,9 @@ exports.signout = (req, res) => {
  }
 
 
-exports.verifyToken = (req,res,next) => { 
+const verifyToken = (req,res,next) => { 
    
+    const authHeader = req.headers.token
 
     if(authHeader) {
         const token = authHeader.split(' ')[1]
@@ -64,8 +65,8 @@ exports.verifyToken = (req,res,next) => {
     }
  }
 
-exports.authorisedUser = (req, res, next) => {
-    verifySignin(req,res,() => {
+const authorisedUser = (req, res, next) => {
+    verifyToken(req,res,() => {
         if(req.user.id === req.params.id) {
           next()
         }else {
@@ -78,3 +79,4 @@ exports.authorisedUser = (req, res, next) => {
 }
 
 
+module.exports = { authorisedUser,verifyToken,signIn,signout}
