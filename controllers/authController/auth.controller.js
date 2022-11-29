@@ -1,7 +1,7 @@
 const User = require('../../models/userModel/user.model')
 const Jwt = require('jsonwebtoken')
 const CryptoJS = require('crypto-js')
-// const { getErrorMessage } = require('../../dbErrorHandler')
+
 
 const signIn = async (req, res) => { 
  
@@ -13,8 +13,6 @@ try {
     
     // const originalPassword = req.body.password
 
-    if(!user) res.status(401).json({message: 'user not found'});
-
      const accessToken = Jwt.sign({
         id: user._id,
         email: user.email
@@ -24,10 +22,9 @@ try {
 
     res.status(201).json({
         status: 'success',
-        data: {
             user,
-        token: accessToken 
-        }
+           token: accessToken 
+        
     })
 } catch (error) {
     res.status(401).json({
@@ -79,4 +76,4 @@ const authorisedUser = (req, res, next) => {
 }
 
 
-module.exports = { authorisedUser,verifyToken,signIn,signout}
+module.exports = { authorisedUser,verifyToken,signIn,signout }

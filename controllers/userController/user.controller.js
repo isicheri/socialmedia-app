@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const CryptoJS = require('crypto-js')
 const {getErrorMessage} = require('../../dbErrorHandler')
 const User = require('../../models/userModel/user.model')
@@ -11,6 +10,7 @@ exports.createUser = async(req,res) => {
        
     //     if(req.body.password) {
     //         req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC).toString()
+    //        console.log(true)
     // }
 
      return res.status(201).json({
@@ -23,7 +23,8 @@ exports.createUser = async(req,res) => {
 
     } catch (error) {
         return res.status(400).json({
-            error: getErrorMessage(error)
+            status: 'failed',
+            error: getErrorMessage(error) || 'signup failed'
         })
     }
 }
@@ -43,7 +44,7 @@ try {
 } catch (error) {
     res.status(400).json({
         status: 'failed',
-        error: getErrorMessage(error)
+        error: getErrorMessage(error) || ''
     })
 }
 
@@ -60,7 +61,7 @@ exports.userById = async (req,res,next,id) => {
         req.profile = user
         next()
         } catch (error) {
-        return res.status('400').json({
+        return res.status(400).json({
         error: getErrorMessage(error)
         })
         }
