@@ -22,7 +22,11 @@ password: {
     trim: true
    },
    photo: {
+<<<<<<< HEAD
     type: Buffer,
+=======
+    data: Buffer,
+>>>>>>> bbfefab9b69019a52c5c404bc8aa1ee3a24646ab
     contentType: String
    }
 },{timestamps: true})
