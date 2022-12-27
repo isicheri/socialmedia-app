@@ -16,6 +16,14 @@ email: {
 password: {
     type: String,
     required: [true,"Password is required"]
+   },
+   about: {
+    type: String,
+    trim: true
+   },
+   photo: {
+    type: Buffer,
+    contentType: String
    }
 },{timestamps: true})
 
